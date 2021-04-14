@@ -14,9 +14,9 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     copter.vy += 1
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Player, function (sprite, otherSprite) {
+sprites.onOverlap(SpriteKind.Helicopter, SpriteKind.cloud, function (sprite, otherSprite) {
     sprite.x += -1 * sprite.vx
-    sprite.x += -1 * sprite.vy
+    sprite.y += -1 * sprite.vy
     sprite.vx = 0
     sprite.vy = 0
     otherSprite.y += -1
@@ -106,7 +106,7 @@ let cloud3 = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.cloud)
 cloud3.x = 100
-cloud3.x = 40
+cloud3.y = 40
 let landing = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . f f f f f f f f f f f f f f . 
