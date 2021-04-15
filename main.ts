@@ -1,6 +1,8 @@
 namespace SpriteKind {
     export const Helicopter = SpriteKind.create()
     export const cloud = SpriteKind.create()
+    export const landingPad = SpriteKind.create()
+    export const person = SpriteKind.create()
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     copter.vy += -1
@@ -10,6 +12,15 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     copter.vx += 1
+})
+sprites.onOverlap(SpriteKind.Helicopter, SpriteKind.person, function (sprite, otherSprite) {
+    otherSprite.say("AHHHH YOU HIT ME")
+})
+sprites.onOverlap(SpriteKind.Helicopter, SpriteKind.landingPad, function (sprite, otherSprite) {
+    copter.vx += -1 * sprite.vy
+    copter.vy += -1 * sprite.vy
+    copter.y += 2
+    game.over(true)
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     copter.vy += 1
@@ -124,5 +135,63 @@ let landing = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
-    `, SpriteKind.Player)
+    `, SpriteKind.landingPad)
 landing.y = 125
+let tree = sprites.create(img`
+    ................................
+    ...........777777777777.........
+    .......7777777777777777777......
+    .....7777777777777777777777.....
+    ....777777777777777777777777....
+    ...7777777777777777777777777....
+    ...77777777777777777777777777...
+    ..777777777777777777777777777...
+    ..777777777777777777777777777...
+    .77777777777777777777777777777..
+    .77777777777777777777777777777..
+    .77777777777777777777777777777..
+    ..7777777777777777777777777777..
+    ..7777777777777777777777777777..
+    ....777777777eeeeeee7777777777..
+    ......7777777eeeeeee7777777777..
+    ........77777eeeeeee7777777777..
+    .............eeeeeee.77777777...
+    .............eeeeeee..777777....
+    .............eeeeeee............
+    .............eeeeeee............
+    .............eeeeeee............
+    .............eeeeeee............
+    .............eeeeeee............
+    .............eeeeeee............
+    ............eeeeeeee............
+    ............eeeeeeee............
+    ...........eeeeeeeee............
+    ...........eeeeeeeeee...........
+    ..........eeeeeeeeeee...........
+    ..........eeeeeeeeeee...........
+    .........eeeeeeeeeeeee..........
+    `, SpriteKind.cloud)
+tree.setPosition(130, 75)
+let otherSprite = sprites.create(img`
+    . . . . f f f f f f f . . . . . 
+    . f f f f d d d d d d f f . . . 
+    . f d d d d f d d f d d d f . . 
+    . f d d f d d d d d d f d d f . 
+    . f f d f f f f f f f f d d f f 
+    . . f d d d d d d d d d d d f f 
+    . . f f f f f f f d d d f f f . 
+    f . . . . 3 3 3 f f f f f . . . 
+    f . . . 3 3 3 3 3 3 3 . . . . . 
+    f f f f 3 3 3 3 3 3 3 3 f f f f 
+    . . . . 3 3 3 3 3 3 3 3 . . . f 
+    . . . . . 3 3 3 3 3 3 3 . . . . 
+    . . . . . 3 3 3 3 3 3 3 . . . . 
+    . . . . . f 3 3 3 f 3 . . . . . 
+    . . f f f f . . 3 f f f f . . . 
+    . . f f f f . . . f f f f . . . 
+    `, SpriteKind.person)
+otherSprite.setPosition(34, 96)
+game.onUpdate(function () {
+    copter.x += controller.dx()
+    copter.y += controller.dy()
+})
